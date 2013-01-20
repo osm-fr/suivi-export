@@ -25,7 +25,7 @@ et permettre des totaux
 
 */
 
-require_once("config.php");
+require_once("../config.php");
 $somme_sandre = $somme_sandre_mapee = $somme_osm = $nb_sandre = $nb_osm = $ln = 0;
 
 /* Petite bidouille pour fournir le code source de moi même si ?src est passé en paramètre --sly */
