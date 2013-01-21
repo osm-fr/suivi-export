@@ -1,6 +1,6 @@
 #!/bin/bash
 CHEMIN_EXPORT="/data/work/osm2pgsql/export-contours-administratifs/"
-DB_OSM2PGSQL=`grep pg_france_data_base config.php | cut -f2 -d\= | cut -f2 -d\"`
+DB_OSM2PGSQL=`grep pg_france_data_base ../config.php | cut -f2 -d\= | cut -f2 -d\"`
 
 if [ a$3 = "a" ] ;  then
 echo "Utilisation : ./export-limites-administratives.sh <admin_level> <nombre_attendu> <nom du fichier>"

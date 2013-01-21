@@ -1,3 +1,0 @@
-Preparing table for user query... Done.
-Initializing... WARNING: Cannot determine spatial reference (empty table or unknown spatial ref). No prj file will be generated.
-ERROR: Cannot determine geometry type (empty table).
