@@ -7,6 +7,9 @@ $pg_password="";
 $pg_server="osm2pgsql-monde.openstreetmap.fr";
 $fichier_state_date_base="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt";
 
+$dossier_temporaire="/data/work/osm2pgsql/tmp";
+
+
 // Config file to access a local osm2pgsql France only database
 $pg_france_data_base="osm";
 
