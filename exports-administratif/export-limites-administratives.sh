@@ -25,7 +25,7 @@ if [ "a$RES" = "a" ] ; then
 complet_ou_pas="incomplet"
 else
 complet_ou_pas="complet"
-rm $CHEMIN_EXPORT/$3-metropole-incomplet.tar.gz
+rm $CHEMIN_EXPORT/$3-metropole-incomplet.tar.gz 2>/dev/null
 fi
 
 tar cvfz $CHEMIN_EXPORT/$3-metropole-$complet_ou_pas.tar.gz $dossier_temporaire/$3-metropole.*
