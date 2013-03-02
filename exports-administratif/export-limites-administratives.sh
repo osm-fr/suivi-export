@@ -18,7 +18,7 @@ exit
 fi
 
 
-pgsql2shp -f $dossier_temporaire/$3-metropole $DB_OSM2PGSQL "select st_transform(admin.way,4326) as way,admin.name as nom,admin.ref as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.ref is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > $dossier_temporaire/resultat
+pgsql2shp -f $dossier_temporaire/$3-metropole $DB_OSM2PGSQL "select st_transform(admin.way,4326) as way,admin.name as nom,admin.ref as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.ref is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > 2>/dev/null
 RES=`cat $dossier_temporaire/resultat | grep "\[$2"` 
 
 if [ "a$RES" = "a" ] ; then
@@ -32,4 +32,3 @@ cd $dossier_temporaire
 tar cvfz $CHEMIN_EXPORT/$3-metropole-$complet_ou_pas.tar.gz $3-metropole.*
 cd -
 rm $dossier_temporaire/$3-metropole.*
-rm $dossier_temporaire/resultat
