@@ -8,7 +8,9 @@ dossier_temporaire=`grep dossier_temporaire ../config.php | cut -f2 -d\= | cut -
 mkdir $dossier_temporaire 2>/dev/null
 
 pgsql2shp -f $dossier_temporaire/cours_eau_france $osm_base "select \"ref:sandre\",name,st_transform(way,4326) as way from planet_osm_line where \"ref:sandre\" is not null and waterway='river'"
-tar cvfz $CHEMIN_EXPORT/cours-eau-france.shp.tar.gz $dossier_temporaire/cours_eau_france*
+cd $dossier_temporaire
+tar cvfz $CHEMIN_EXPORT/cours-eau-france.shp.tar.gz cours_eau_france*
+cd -
 rm -f  $dossier_temporaire/cours_eau_france.*
 
   

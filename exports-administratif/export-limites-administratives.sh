@@ -28,6 +28,8 @@ complet_ou_pas="complet"
 rm $CHEMIN_EXPORT/$3-metropole-incomplet.tar.gz 2>/dev/null
 fi
 
-tar cvfz $CHEMIN_EXPORT/$3-metropole-$complet_ou_pas.tar.gz $dossier_temporaire/$3-metropole.*
+cd $dossier_temporaire
+tar cvfz $CHEMIN_EXPORT/$3-metropole-$complet_ou_pas.tar.gz $3-metropole.*
+cd -
 rm $dossier_temporaire/$3-metropole.*
 rm $dossier_temporaire/resultat
