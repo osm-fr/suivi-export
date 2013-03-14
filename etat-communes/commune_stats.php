@@ -128,7 +128,7 @@ if ($dep[0]=="0")
 print("dep :$dep...\n");
 // CADASTRE
 //Récupération des infos du cadastre
-$liste_communes_non_presentes_vecteur.="### Département $dep, communes n'étant pas, n'ayant pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en vecteur au cadastre):\n";
+$liste_communes_non_presentes_vecteur.="### Département $dep, communes dont les limites ne sont pas, ou n'ont pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en vecteur au cadastre):\n";
 
 $file="./tmp/$dep.csv";
 
@@ -237,7 +237,7 @@ foreach ($liste_code_insee_vecteur as $commune => $son_nom)
         $j++;
         $compteur_commune_vecto_cadastre_pas_dans_osm++;
 }
-$liste_communes_non_presentes_image.="### Département $dep, communes n'étant pas, n'ayant pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en image au cadastre):\n";
+$liste_communes_non_presentes_image.="### Département $dep, communes dont les limites ne sont pas, ou n'ont pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en image au cadastre):\n";
 foreach ($liste_code_insee_image as $commune => $son_nom)
 {
 	$liste_communes_non_presentes_image.="$son_nom, Référence INSEE:$commune\n";
@@ -284,7 +284,7 @@ $suivi="\n$liste_communes_non_presentes_vecteur\n$liste_communes_non_presentes_i
 $date=rtrim(str_replace("\\","",exec("wget $fichier_state_date_base -q -O -  | grep timestamp | sed s/timestamp=// | sed s/T/\\ / | sed s/:..Z// ")));
 $bug_trouve="Vous pensez avoir trouvé un bug ? Vous pouvez le signaler ici : http://trac.openstreetmap.fr/newticket , (composant suivi/export admin)\n";
 $en_tete="
-Etat statistiques des communes calculé le ".date(DATE_RFC822)." sur une copie de la base public osm datant du : $date\n";
+Etat statistiques des limites de communes calculé le ".date(DATE_RFC822)." sur une copie de la base public osm datant du : $date\n";
 file_put_contents("$chemin_suivi_communes/communes.csv",$csv);
 file_put_contents("$chemin_suivi_communes/suivi.txt",$bug_trouve.$en_tete.$suivi);
 file_put_contents("$chemin_suivi_communes/suivi-vectoriel.txt",$bug_trouve.$en_tete.$liste_communes_non_presentes_vecteur);
