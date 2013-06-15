@@ -60,6 +60,7 @@ $suivi_dans_osm="
 <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">
                     
 <head>
+<meta http-equiv='Content-type' content='text/html;charset=UTF-8' />
 <title>Comparaison cours d'eau sandre et osm</title>
 <base html='http://beta.letuffe.org/ressources/cartes/hydrographie-france.png' />
 <style type=\"text/css\">
@@ -88,7 +89,8 @@ div.warning span {
 <a href=\"http://wiki.openstreetmap.org/wiki/WikiProject_France/Cours_d%27eau#Outils_de_suivi\">Explications</a>
 </p>
 <table border='1'>
-<thead><tr><th><a href='?order=toponyme'>Rivière</a></th><th>id_osm</th><th><a href='?order=code_hydro'>ref sandre</a></th><th><a href='?order=longueur'>km sandre</a></th><th>km osm en france</th><th>Avancement</th></tr><thead>\n";
+<thead><tr><th><a href='?order=toponyme'>Rivière</a></th><th>id_osm</th><th><a href='?order=code_hydro'>ref sandre</a></th><th><a href='?order=longueur'>km sandre</a></th><th>km osm en france</th><th>Avancement</th></tr></thead>
+<tbody>\n";
 
 
 /* Par défaut, on classe par longeur, sinon par le paramètre order passé en paramètre GET --vincent */
@@ -144,7 +146,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
       $type="way";
     }
       if ($nombre_lignes>1) {
-        $erreur="<div class=\"warning\"><span>$nombre_lignes morceaux:</span><br>";
+        $erreur="<div class=\"warning\"><span>$nombre_lignes morceaux:</span><br />";
         $num_printed = 0;
         while ($num_printed < 3 && ($data = pg_fetch_object($res_osm))) {
           $num_printed ++;
@@ -153,7 +155,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
           $erreur .= $add_osm_id<0 ? "relation/" : "way/";
           $erreur .= abs($add_osm_id);
           $erreur .= "'>" . abs($add_osm_id);
-          $erreur .= "</a><br>";
+          $erreur .= "</a><br />";
         }
         if (($num_printed + 1) < $nombre_lignes)
           $erreur .= "…";
@@ -201,6 +203,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
   }
 }
 print $suivi_dans_osm.$suivi_pas_dans_osm;
+print "</tbody>";
 
 // ligne total
 if ($somme_sandre_mapee!=0)
