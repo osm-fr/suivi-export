@@ -108,10 +108,11 @@ while($liste_sandre=pg_fetch_object($res_sandre))
   J'utilise une colonne spécialement simplifiée pour l'occasion pour accélérer le calcul --sly
   */
   $query_osm="select
-  l.osm_id as osm_id,st_length(st_transform(st_intersection(f.simplified_way,l.way),2154)) as longueur
+  l.osm_id as osm_id,sum(st_length(st_transform(st_intersection(f.simplified_way,l.way),2154))) as longueur
   from planet_osm_line as l,france_polygon as f
-  where f.osm_id=0 and \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream') 
-  order by st_npoints(l.way) desc";
+  where f.osm_id=0 and \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream')
+  group by l.osm_id
+  order by longueur desc";
   
   $res_osm=pg_query($query_osm);
   $l_sandre=round($liste_sandre->longueur/1000,1);
