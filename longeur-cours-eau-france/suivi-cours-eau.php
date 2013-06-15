@@ -82,14 +82,15 @@ div.warning span {
 -->
 
 </style>
+<script src='sorttable.js' type='text/javascript'></script>
 </head>
 <body>
 <p>État d'avancement du tracé des rivières françaises de plus de $seuil_longueur_max km en date du $date (<a href=\"http://wiki.openstreetmap.org/wiki/User:Sletuffe\">sly est l'actuel mainteneur de cet outil)</a> </p>
 <p>
 <a href=\"http://wiki.openstreetmap.org/wiki/WikiProject_France/Cours_d%27eau#Outils_de_suivi\">Explications</a>
 </p>
-<table border='1'>
-<thead><tr><th><a href='?order=toponyme'>Rivière</a></th><th>id_osm</th><th><a href='?order=code_hydro'>ref sandre</a></th><th><a href='?order=longueur'>km sandre</a></th><th>km osm en france</th><th>Avancement</th></tr></thead>
+<table class='sortable' border='1'>
+<thead><tr><th><a href='?order=toponyme'>Rivière</a></th><th>id_osm</th><th><a href='?order=code_hydro'>ref sandre</a></th><th class='sorttable_sorted'><a href='?order=longueur'>km sandre</a><span id='sorttable_sortfwdind'>&nbsp;▾</span></th><th>km osm en france</th><th class='sorttable_numeric'>Avancement</th></tr></thead>
 <tbody>\n";
 
 
