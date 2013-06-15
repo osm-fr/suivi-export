@@ -70,9 +70,13 @@ td.a0_50 { color: red; }
 td.a50_80 { color: orange; }
 /* normal color for 80-95 */
 td.a95_ { color: green; }
-.warning {
-color :red;
-display:inline;
+div.warning {
+  border-left: 2px solid black;
+  margin-left: 10px;
+  padding-left: 5px;
+}
+div.warning span {
+  color :red;
 }
 -->
 
@@ -140,7 +144,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
       $type="way";
     }
       if ($nombre_lignes>1) {
-        $erreur="<div class=\"warning\">$nombre_lignes morceaux:</div><br>";
+        $erreur="<div class=\"warning\"><span>$nombre_lignes morceaux:</span><br>";
         $num_printed = 0;
         while ($num_printed < 3 && ($data = pg_fetch_object($res_osm))) {
           $num_printed ++;
@@ -149,12 +153,15 @@ while($liste_sandre=pg_fetch_object($res_sandre))
           $erreur .= $add_osm_id<0 ? "relation/" : "way/";
           $erreur .= abs($add_osm_id);
           $erreur .= "'>" . abs($add_osm_id);
-          $erreur .= "</a> ";
+          $erreur .= "</a><br>";
         }
+        if (($num_printed + 1) < $nombre_lignes)
+          $erreur .= "…";
+        $erreur .= "</div>";
       } else {
-        $erreur="$nombre_lignes morceau";
+        $erreur="";
       }
-      $analyse=" $erreur <a href=\"http://analyser.openstreetmap.fr/cgi-bin/index.py?relation=$osm_id_reel\">Analyse</a>";
+      $analyse=" <a href=\"http://analyser.openstreetmap.fr/cgi-bin/index.py?relation=$osm_id_reel\">Analyse</a> $erreur";
       
 
       $osm_id_lien="<a href='http://www.openstreetmap.org/browse/$type/$osm_id_reel'>$osm_id_reel</a>
