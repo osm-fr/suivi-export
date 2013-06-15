@@ -139,10 +139,21 @@ while($liste_sandre=pg_fetch_object($res_sandre))
       $is_way="(w)";
       $type="way";
     }
-      if ($nombre_lignes>1)
-        $erreur="<div class=\"warning\">$nombre_lignes morceaux trouvés:</div>";
-      else
-        $erreur="$nombre_lignes morceau trouvé";
+      if ($nombre_lignes>1) {
+        $erreur="<div class=\"warning\">$nombre_lignes morceaux:</div><br>";
+        $num_printed = 0;
+        while ($num_printed < 3 && ($data = pg_fetch_object($res_osm))) {
+          $num_printed ++;
+          $add_osm_id = $data->osm_id;
+          $erreur .= "<a href='http://www.openstreetmap.org/browse/";
+          $erreur .= $add_osm_id<0 ? "relation/" : "way/";
+          $erreur .= abs($add_osm_id);
+          $erreur .= "'>" . abs($add_osm_id);
+          $erreur .= "</a> ";
+        }
+      } else {
+        $erreur="$nombre_lignes morceau";
+      }
       $analyse=" $erreur <a href=\"http://analyser.openstreetmap.fr/cgi-bin/index.py?relation=$osm_id_reel\">Analyse</a>";
       
 
