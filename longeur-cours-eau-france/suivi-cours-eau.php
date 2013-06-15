@@ -26,7 +26,7 @@ et permettre des totaux
 */
 
 require_once("../config.php");
-$somme_sandre = $somme_sandre_mapee = $somme_osm = $nb_sandre = $nb_osm = $ln = 0;
+$somme_sandre = $somme_sandre_mapee = $somme_osm = $nb_sandre = $nb_osm = 0;
 $suivi_pas_dans_osm = "";
 
 /* Petite bidouille pour fournir le code source de moi même si ?src est passé en paramètre --sly */
@@ -65,7 +65,7 @@ $suivi_dans_osm="
 <style type=\"text/css\">
 <!--
 thead th {background-color: #cccccc}
-.tr0 td {background-color: #ccffff}
+tr:nth-child(even) {background-color: #ccffff}
 td.a0_50 { color: red; }
 td.a50_80 { color: orange; }
 /* normal color for 80-95 */
@@ -166,7 +166,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
   else if ($avancee < 95) { $style_avancement = "a80_95"; }
   else { $style_avancement = "a95_"; }
 
-  $ligne_html="<tr class='tr".($ln % 2)."'><td>$liste_sandre->toponyme</td><td>$osm_id_lien</td><td>$liste_sandre->code_hydro</td><td>$l_sandre</td><td>$longueur_riviere_dans_osm</td><td class=\"$style_avancement\">$avancee %</td></tr>\n";
+  $ligne_html="<tr><td>$liste_sandre->toponyme</td><td>$osm_id_lien</td><td>$liste_sandre->code_hydro</td><td>$l_sandre</td><td>$longueur_riviere_dans_osm</td><td class=\"$style_avancement\">$avancee %</td></tr>\n";
   if ($avancee==0)
   {
     $somme_sandre += $l_sandre;
@@ -181,7 +181,6 @@ while($liste_sandre=pg_fetch_object($res_sandre))
     $nb_sandre++;
     $suivi_dans_osm.=$ligne_html;
   }
-  $ln++;
 }
 print $suivi_dans_osm.$suivi_pas_dans_osm;
 
