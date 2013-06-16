@@ -93,6 +93,21 @@ div.warning span {
 <thead><tr><th><a href='?order=toponyme'>Rivière</a></th><th>id_osm</th><th><a href='?order=code_hydro'>ref sandre</a></th><th class='sorttable_sorted'><a href='?order=longueur'>km sandre</a><span id='sorttable_sortfwdind'>&nbsp;▾</span></th><th>km osm en france</th><th class='sorttable_numeric'>Avancement</th></tr></thead>
 <tbody>\n";
 
+function print_osm_id($id)
+{
+  if ($id >= 0) {  // way
+    $type = "way";
+    $real_id = $id;
+    $is_way = " (w)";
+  } else {  // relation
+    $type = "relation";
+    $real_id = -$id;
+    $is_way = "";
+  }
+  $s  = "<a href='http://www.openstreetmap.org/browse/$type/$real_id'>$real_id</a> ";
+  $s .= "<a href='http://localhost:8111/import?url=http://api.openstreetmap.org/api/0.6/$type/$real_id/full'>josm$is_way</a>";
+  return $s;
+}
 
 /* Par défaut, on classe par longeur, sinon par le paramètre order passé en paramètre GET --vincent */
 $order = isset($_GET['order']) ? $_GET['order'] : 'longueur';
@@ -137,14 +152,10 @@ while($liste_sandre=pg_fetch_object($res_sandre))
     if ($osm_id<0) // il s'agit d'une relation
     {
       $osm_id_reel=-$osm_id;
-      $is_way="";
-      $type="relation";
     }
     else // il s'agit d'un way
     {
       $osm_id_reel=$osm_id;
-      $is_way="(w)";
-      $type="way";
     }
       if ($nombre_lignes>1) {
         $erreur="<div class=\"warning\"><span>$nombre_lignes morceaux:</span><br />";
@@ -152,11 +163,8 @@ while($liste_sandre=pg_fetch_object($res_sandre))
         while ($num_printed < 3 && ($data = pg_fetch_object($res_osm))) {
           $num_printed ++;
           $add_osm_id = $data->osm_id;
-          $erreur .= "<a href='http://www.openstreetmap.org/browse/";
-          $erreur .= $add_osm_id<0 ? "relation/" : "way/";
-          $erreur .= abs($add_osm_id);
-          $erreur .= "'>" . abs($add_osm_id);
-          $erreur .= "</a><br />";
+          $erreur .= print_osm_id($add_osm_id);
+          $erreur .= "<br />";
         }
         if (($num_printed + 1) < $nombre_lignes)
           $erreur .= "…";
@@ -166,10 +174,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
       }
       $analyse=" <a href=\"http://analyser.openstreetmap.fr/cgi-bin/index.py?relation=$osm_id_reel\">Analyse</a> $erreur";
       
-
-      $osm_id_lien="<a href='http://www.openstreetmap.org/browse/$type/$osm_id_reel'>$osm_id_reel</a>
-      <a href='http://localhost:8111/import?url=http://api.openstreetmap.org/api/0.6/$type/$osm_id_reel/full'>josm $is_way</a>$analyse";
-
+      $osm_id_lien = print_osm_id($osm_id) . $analyse;
   }
   // pas cartographié
   else
