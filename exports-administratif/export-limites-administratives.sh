@@ -17,8 +17,14 @@ echo "Exemple : ./export-limites-administratives.sh 4 22 regions"
 exit
 fi
 
+# Bidouille car les regions on comme référence principale ref:INSEE, mais les départements ref
+if  [ $1 == 4 ] ; then
+  champ_contenant_ref="\"admin.ref:INSEE\""
+else
+  champ_contenant_ref="admin.ref"
+fi
 
-pgsql2shp -f $dossier_temporaire/$3-metropole $DB_OSM2PGSQL "select st_transform(admin.way,4326) as way,admin.name as nom,admin.ref as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.ref is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > /dev/null 2>/dev/null
+pgsql2shp -f $dossier_temporaire/$3-metropole $DB_OSM2PGSQL "select st_transform(admin.way,4326) as way,admin.name as nom,admin.ref as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and $champ_contenant_ref is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > /dev/null 2>/dev/null
 RES=`cat $dossier_temporaire/resultat | grep "\[$2"` 
 
 if [ "a$RES" = "a" ] ; then
