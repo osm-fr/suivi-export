@@ -6,7 +6,7 @@ cd ..
 
 #calcul des km par cours d'eau et comparaison au SANDRE
 dossier_cours-eau=/data/work/suivi/longeur-cours-eau-france/
-mkdir $dossier_cours-eau 
+mkdir $dossier_cours_eau 
 cd longeur-cours-eau-france ; php  suivi-cours-eau.php > $dossier_cours-eau/comparaison-sandre.html
 cd ..
 
