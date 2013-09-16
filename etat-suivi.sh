@@ -5,7 +5,7 @@ cd etat-communes ; php commune_stats.php >commune_stat.log 2>&1
 cd ..
 
 #calcul des km par cours d'eau et comparaison au SANDRE
-dossier_cours-eau=/data/work/suivi/longeur-cours-eau-france/
+dossier_cours_eau=/data/work/suivi/longeur-cours-eau-france/
 mkdir $dossier_cours_eau 
 cd longeur-cours-eau-france ; php  suivi-cours-eau.php > $dossier_cours-eau/comparaison-sandre.html
 cd ..
