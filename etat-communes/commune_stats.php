@@ -29,8 +29,9 @@ if (isset($_GET['src']))
 /********* CONFIG ***********/
 $use_cache=TRUE;
 $exportation_shape=TRUE;
-$chemin_depot="/data/work/osm2pgsql/export-contours-administratifs/export-communes";
-$chemin_suivi_communes="/data/work/osm2pgsql/suivi-communes";
+$chemin_depot="$chemin_export/export-contours-administratifs/export-communes";
+$chemin_suivi_communes="$chemin_suivi/suivi-communes";
+$dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 mkdir($dossier_stats_cadastre);
 // Dans la table france_polygon_manuel, quel osm_id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
 $osm_id_france=5;
@@ -139,7 +140,7 @@ if ($use_cache and is_file($file))
 }
 else
 {
-	exec('curl -c $dossier_stats_cadastre/cookies-1 "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do" > tmp/page-1.html 2>/dev/null');
+	exec('curl -c $dossier_stats_cadastre/cookies-1 "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do" > $dossier_stats_cadastre/page-1.html 2>/dev/null');
 	exec("curl -b $dossier_stats_cadastre/cookies-1 -c $dossier_stats_cadastre/cookies-2  \"http://www.cadastre.gouv.fr/scpc/listerCommune.do?codeDepartement=$dep_cadastre&libelle=&keepVolatileSession=&offset=5000\" > $dossier_stats_cadastre/page-2.html 2>/dev/null");
 	
 	$liste_cadastre=array();

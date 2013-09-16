@@ -7,7 +7,8 @@ $pg_password="";
 $pg_server="osm2pgsql-monde.openstreetmap.fr";
 $fichier_state_date_base="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt";
 
-$dossier_stats_cadastre="/dev/shm/cadastre"
+$chemin_suivi="/data/work/suivi";
+$chemin_export="/data/work/export";
 $dossier_temporaire="/dev/shm/";
 
 
