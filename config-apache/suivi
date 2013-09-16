@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+
+        ServerAdmin jocelyn@osm1.crans.org
+
+        ServerName suivi.openstreetmap.fr
+
+        DocumentRoot /data/work/suivi/
+
+        <Directory /data/work/suivi/>
+                AddDefaultCharset UTF-8
+                AddHandler cgi-script .py
+                Options FollowSymLinks Indexes MultiViews
+		#Changé de +SymLinksIfOwnerMatch en -SymLinksIfOwnerMatch par sly le 27/05/2013 (le dossier de suivi de commune et calculé par osm2pgsql mais pour des
+		#raisons de simplicité le lien peut être réalisé par un autre user, la sécu me semble loin d'être engagée, mais m'en causer
+		#si vous voulez faire autrement
+                Options +ExecCGI -MultiViews -SymLinksIfOwnerMatch
+                AllowOverride None
+                DirectoryIndex index.html index.py
+        </Directory>
+
+        ExpiresActive On
+        ExpiresByType image/png "access plus 1 month"
+
+        ErrorLog /var/log/apache2/suivi-error.log
+        LogLevel warn
+        CustomLog /var/log/apache2/suivi-access.log combined
+        ServerSignature On
+
+</VirtualHost>
+
