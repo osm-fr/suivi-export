@@ -106,7 +106,7 @@ $departements[]="974";
 
 // Nettoyage des fichiers du cache s'ils sont vieux de plus de x jours
 // flemme de le faire en php ;-)
-exec("find tmp -type f -ctime +5 -exec rm {} \;");
+exec("find $dossier_temporaire -type f -ctime +5 -exec rm {} \;");
 
 // temporaire pour test un seul département
 //$departements=array("974");
@@ -130,7 +130,7 @@ print("dep :$dep...\n");
 //Récupération des infos du cadastre
 $liste_communes_non_presentes_vecteur.="### Département $dep, communes dont les limites ne sont pas, ou n'ont pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en vecteur au cadastre):\n";
 
-$file="./tmp/$dep.csv";
+$file="$dossier_temporaire/$dep.csv";
 
 if ($use_cache and is_file($file))
 {
@@ -138,13 +138,13 @@ if ($use_cache and is_file($file))
 }
 else
 {
-	exec('curl -c tmp/cookies-1 "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do" > tmp/page-1.html 2>/dev/null');
-	exec("curl -b tmp/cookies-1 -c tmp/cookies-2  \"http://www.cadastre.gouv.fr/scpc/listerCommune.do?codeDepartement=$dep_cadastre&libelle=&keepVolatileSession=&offset=5000\" > tmp/page-2.html 2>/dev/null");
+	exec('curl -c $dossier_temporaire/cookies-1 "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do" > tmp/page-1.html 2>/dev/null');
+	exec("curl -b $dossier_temporaire/cookies-1 -c $dossier_temporaire/cookies-2  \"http://www.cadastre.gouv.fr/scpc/listerCommune.do?codeDepartement=$dep_cadastre&libelle=&keepVolatileSession=&offset=5000\" > $dossier_temporaire/page-2.html 2>/dev/null");
 	
 	$liste_cadastre=array();
 	
 	// FIXME MEGA BIDOUILLE - Youpi, faisons du parsing de page html toute mal fichue, autant dire qu'a la moindre modification de la structure de la page et tout foire
-	$flot_html=shell_exec("cat tmp/page-2.html | sed \"s/<\/tbody><\/table>/<\/tbody><\/table>\\n/g\" | grep 'ajoutArticle'");
+	$flot_html=shell_exec("cat $dossier_temporaire/page-2.html | sed \"s/<\/tbody><\/table>/<\/tbody><\/table>\\n/g\" | grep 'ajoutArticle'");
 	preg_match_all(	"/<strong>(.*)\ \((.*)\).*ajoutArticle\('([A-Z0-9]*)','([A-Z0-9]*)'/",$flot_html,$res);
 
 	// création du tableau avec une commune par ligne au format nom commune,code postal, code INSEE, VECT ou IMAG
