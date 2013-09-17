@@ -44,6 +44,7 @@ mkdir /data/work/export/export-contours-administratifs
 mkdir /data/work/export/export-contours-administratifs/export-communes
 mkdir /data/work/suivi/suivi-communes
 mkdir /data/work/export/export-contours-administratifs/export-communes/incomplet
+``
 
 /* 
 editer et configurer le compte d'accès postresql "suivi-export" et plusieurs chemins en éditant config.php 
@@ -57,6 +58,7 @@ pour l'utilisateur suivi-export
 */
 
 
+``
 exit
 cp /data/project/suivi-export/config-apache/* /etc/apache2/sites-available/
 a2ensite suivi
