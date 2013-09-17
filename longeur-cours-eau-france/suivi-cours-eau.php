@@ -49,7 +49,7 @@ taper ce commentaire j'aurais pû le refaire en php ;-)
 -- sly
 */
 
-$date=exec('grep timestamp ../../import-base-osm/state.txt | sed s/timestamp=// | sed s/\\\\\\\\//g | sed s/[TZ]/" "/g');
+$date=exec('grep timestamp '.$fichier_state_base_france.' | sed s/timestamp=// | sed s/\\\\\\\\//g | sed s/[TZ]/" "/g');
 
 /* Un paramètre pour ne pas afficher les cours d'eau non présent dans osm d'une longeur de moins de X km, sinon la page est immense --sly*/
 $seuil_longueur_max=80;

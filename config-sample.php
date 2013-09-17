@@ -6,6 +6,7 @@ $pg_user="mapnik";
 $pg_password="";
 $pg_server="osm2pgsql-monde.openstreetmap.fr";
 $fichier_state_date_base="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt";
+$fichier_state_base_france="/data/project/osm2pgsql/import-base-osm/state.txt";
 
 $chemin_suivi="/data/work/suivi";
 $chemin_export="/data/work/export";
