@@ -127,13 +127,22 @@ while($liste_sandre=pg_fetch_object($res_sandre))
 {
 
   /* Le sandre ne donnant que les km en france alors qu'osm n'a pas cette limite, j'utilise le polygone france que j'ai dans france_polygon 
-  pour construitre l'intersection et son osm_id est 1.
+  pour construitre l'intersection et son osm_id est 4 (issue d'une recombinaison depuis osm dont j'ai perdu l'histoire depuis toutes ces années).
   J'utilise une colonne spécialement simplifiée pour l'occasion pour accélérer le calcul --sly
   */
+/* Cette solution permettait de couper juste ce qui est en france pour le comprer au sandre, mais je n'arrive plus à constituer le bon polygone "france" ceux dans le 
+dossier data semble avoir des problèmes de validité
   $query_osm="select
   l.osm_id as osm_id,sum(st_length(st_transform(st_intersection(f.simplified_way,l.way),2154))) as longueur
   from planet_osm_line as l,france_polygon as f
-  where f.osm_id=1 and \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream')
+  where f.osm_id=4 and \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream')
+  group by l.osm_id
+  order by longueur desc";
+*/
+  $query_osm="select
+  l.osm_id as osm_id,sum(st_length(st_transform(l.way,2154))) as longueur
+  from planet_osm_line as l
+  where \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream')
   group by l.osm_id
   order by longueur desc";
   
@@ -184,6 +193,7 @@ while($liste_sandre=pg_fetch_object($res_sandre))
     $osm_id_lien="Pas dans osm";
     if ($liste_sandre->longueur<$seuil_longueur_max*1000)
       $avancee=-1;
+    $osm_id=-1;
   }
   $ligne="$liste_sandre->toponyme;$osm_id;$liste_sandre->code_hydro;$l_sandre;$longueur_riviere_dans_osm;$avancee\n";
 
