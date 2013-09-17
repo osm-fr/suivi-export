@@ -7,6 +7,7 @@ Il démontre comment, en temps réél, reconstruire à l'aide de postgis la pyra
 
 -- sly 13/10/2010
 
+Il n'a toute les chances de ne plus marcher, si d'ici 2014 personne n'en a voulu, alors poubelle
 
 */
 require_once("config.php");

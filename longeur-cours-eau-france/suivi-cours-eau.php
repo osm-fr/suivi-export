@@ -25,7 +25,6 @@ et permettre des totaux
 
 */
 
-require_once("../config.php");
 $somme_sandre = $somme_sandre_mapee = $somme_osm = $nb_sandre = $nb_osm = 0;
 $suivi_pas_dans_osm = "";
 
@@ -38,8 +37,8 @@ if (isset($_GET['src']))
 else
   header("Content-type: text/html; charset=UTF-8");
 
-/* Connexion Ã  la base PostresSQL */
-if (!$c=pg_connect("dbname=$pg_france_data_base"))
+/* Connexion à la base PostresSQL */
+if (!$c=pg_connect("dbname=$argv[1]"))
   die("Erreur connexion SQL");
 
 /* 
@@ -49,7 +48,7 @@ taper ce commentaire j'aurais pû le refaire en php ;-)
 -- sly
 */
 
-$date=exec('grep timestamp '.$fichier_state_base_france.' | sed s/timestamp=// | sed s/\\\\\\\\//g | sed s/[TZ]/" "/g');
+$date=exec('grep timestamp '.$argv[2].' | sed s/timestamp=// | sed s/\\\\\\\\//g | sed s/[TZ]/" "/g');
 
 /* Un paramètre pour ne pas afficher les cours d'eau non présent dans osm d'une longeur de moins de X km, sinon la page est immense --sly*/
 $seuil_longueur_max=80;

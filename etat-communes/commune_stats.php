@@ -19,8 +19,6 @@ sly
  - statistiques totaux
 */
 
-require_once("../config.php");
-
 header("Content-Type: text/plain; charset=UTF-8"); // de toute façon ça se lance dans un cron, sauf cas du :
 /* Petite bidouille pour fournir le code source de moi même si ?src est passé en paramètre */
 if (isset($_GET['src']))
@@ -29,15 +27,16 @@ if (isset($_GET['src']))
 /********* CONFIG ***********/
 $use_cache=TRUE;
 $exportation_shape=TRUE;
-$chemin_depot="$chemin_export/export-contours-administratifs/export-communes";
-$chemin_suivi_communes="$chemin_suivi/suivi-communes";
+$chemin_suivi_communes=$argv[1];
+$chemin_depot=$argv[2];
 $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 @mkdir($dossier_stats_cadastre);
+@mkdir("$chemin_depot/incomplet");
 // Dans la table france_polygon_manuel, quel osm_id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
 $osm_id_france=5;
 
 
-if (!$c=pg_connect("host=$pg_server user=$pg_user password=$pg_password dbname=$pg_data_base"))
+if (!$c=pg_connect("host=$argv[3] user=$argv[3] password=$argv[4] dbname=$argv[5]"))
 	die("Erreur connexion SQL");
 $total_osm=0;
 $total_cadastre=0;

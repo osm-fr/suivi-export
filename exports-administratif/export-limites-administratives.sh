@@ -1,16 +1,16 @@
 #!/bin/bash
-CHEMIN_EXPORT="/data/work/osm2pgsql/export-contours-administratifs/"
-DB_OSM2PGSQL=`grep pg_france_data_base ../config.php | cut -f2 -d\= | cut -f2 -d\"`
-dossier_temporaire=`grep dossier_temporaire ../config.php | cut -f2 -d\= | cut -f2 -d\"`
+DB_OSM2PGSQL=$5
+dossier_temporaire="/dev/shm/tmp"
 mkdir $dossier_temporaire 2>/dev/null
 
-if [ a$3 = "a" ] ;  then
-echo "Utilisation : ./export-limites-administratives.sh <admin_level> <nombre_attendu> <nom du fichier>"
+if [ a$5 = "a" ] ;  then
+echo "Utilisation : ./export-limites-administratives.sh <admin_level> <nombre_attendu> <nom du fichier> <dossier où exporter> <nom de la base locale>"
 echo ""
 echo "Où <admin_level> vaut 6 pour les départements, 4 pour les regions"
 echo "Où <nombre_attendu> et le nombre de contours attendu pour déterminer si l'export est complet ou incomplet"
 echo "Où <nom du fichier> et le nom souhaité pour le fichier d'archive et des shapefiles"
-
+echo "Où <dossier où exporter> est le dossier dans lequel seront créér les shapefiles"
+echo "Où <nom de la base locale> est le nom de la base postgresql local, au schéma osm2pgsql contenant la france"
 echo "Exemple : ./export-limites-administratives.sh 6 96 departements"
 echo "Exemple : ./export-limites-administratives.sh 4 22 regions"
 
@@ -31,10 +31,10 @@ if [ "a$RES" = "a" ] ; then
 complet_ou_pas="incomplet"
 else
 complet_ou_pas="complet"
-rm $CHEMIN_EXPORT/$3-metropole-incomplet.tar.gz 2>/dev/null
+rm $4/$3-metropole-incomplet.tar.gz 2>/dev/null
 fi
 
 cd $dossier_temporaire
-tar cvfz $CHEMIN_EXPORT/$3-metropole-$complet_ou_pas.tar.gz $3-metropole.*
+tar cvfz $4/$3-metropole-$complet_ou_pas.tar.gz $3-metropole.*
 cd -
 rm $dossier_temporaire/$3-metropole.*

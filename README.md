@@ -49,19 +49,10 @@ cd /data/project/
 
 git clone https://github.com/osm-fr/suivi-export.git
 
-mkdir /data/work/export/export-contours-administratifs
-
-mkdir /data/work/export/export-contours-administratifs/export-communes
-
-mkdir /data/work/suivi/suivi-communes
-
-mkdir /data/work/export/export-contours-administratifs/export-communes/incomplet
-
 /* 
 editer et configurer le compte d'accès postresql "suivi-export" et plusieurs chemins en éditant config.php 
 (copie depuis config-sampe.php pour avoir une base)
 */
-
 
 exit
 
