@@ -29,7 +29,6 @@ et fournir le résultat dans
 et
 /data/work/export
 
-``
 mkdir /data/project/suivi-export
 
 useradd suivi-export -d /data/project/suivi-export -s /bin/bash
@@ -57,32 +56,30 @@ mkdir /data/work/export/export-contours-administratifs/export-communes
 mkdir /data/work/suivi/suivi-communes
 
 mkdir /data/work/export/export-contours-administratifs/export-communes/incomplet
-``
 
 /* 
 editer et configurer le compte d'accès postresql "suivi-export" et plusieurs chemins en éditant config.php 
 (copie depuis config-sampe.php pour avoir une base)
 */
 
-/*
-Ajouter au cron une ligne du type :
-0 4 * * * /data/project/suivi-export/etat-suivi.sh
-pour l'utilisateur suivi-export
-*/
 
-
-``
 exit
+
 cp /data/project/suivi-export/config-apache/* /etc/apache2/sites-available/
+
 a2ensite suivi
+
 a2ensite export
+
 a2enmod expires
+
 service apache2 restart
+
 apt-get install php5-pgsql php5-cli
+
 
 créer le role postgresql "suivi-export" et lui donner les droits de select sur les tables locales de osm2pgsql et les tables geometry_columns et spatial_ref_sys
 importer le fichier data/sandre.sql.bz2 dans postgresql, cette unique table doit être accessible en lecture par l'utilisateur "suivi-export" 
-``
 
 
 Modification du code
