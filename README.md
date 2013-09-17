@@ -17,7 +17,7 @@ cron
 cron à lancer chaque nuit (ou en fait quand on veut, mais attention, ça prend bien 30 minutes au total)
 
 ``
-0 4 * * * /chemin-dossier-scripts/etat-suivi.sh
+0 4 * * * cd /chemin-dossier-scripts ; ./etat-suivi.sh
 ``
 
 installation adaptée aux serveurs de openstreetmap france 
