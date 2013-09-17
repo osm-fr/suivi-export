@@ -15,7 +15,10 @@ Mais en attendant, à vous de fouiller les scripts et mettre à jour les chemins
 cron
 ====
 cron à lancer chaque nuit (ou en fait quand on veut, mais attention, ça prend bien 30 minutes au total)
+
+``
 0 4 * * * /chemin-dossier-scripts/etat-suivi.sh
+``
 
 installation adapté aux serveurs de openstreetmap france 
 ========================================================
@@ -26,6 +29,7 @@ et fournir le résultat dans
 et
 /data/work/export
 
+``
 mkdir /data/project/suivi-export
 useradd suivi-export -d /data/project/suivi-export -s /bin/bash
 chown suivi-export.suivi-export /data/project/suivi-export
@@ -63,7 +67,7 @@ apt-get install php5-pgsql php5-cli
 
 créer le role postgresql "suivi-export" et lui donner les droits de select sur les tables locales de osm2pgsql et les tables geometry_columns et spatial_ref_sys
 importer le fichier data/sandre.sql.bz2 dans postgresql, cette unique table doit être accessible en lecture par l'utilisateur "suivi-export" 
-
+``
 
 
 Modification du code
