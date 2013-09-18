@@ -10,7 +10,7 @@ mkdir $chemin_export_administratif 2>/dev/null
 mkdir $chemin_suivi_commune 2>/dev/null
 mkdir $chemin_export_commune 2>/dev/null
 
-cd etat-communes ; php commune_stats.php $chemin_suivi_commune $chemin_export_commune $pg_serveur_monde $pg_role_monde $pg_password_monde $pg_base_monde
+cd etat-communes ; php commune_stats.php $chemin_suivi_commune $chemin_export_commune $pg_serveur_monde $pg_role_monde $pg_password_monde $pg_base_monde > $chemin_suivi_commune/errors.log 2>&1
 cd ..
 
 #calcul des km par cours d'eau et comparaison au SANDRE
