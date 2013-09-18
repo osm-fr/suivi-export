@@ -36,7 +36,7 @@ $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 $osm_id_france=5;
 
 
-if (!$c=pg_connect("host=$argv[3] user=$argv[3] password=$argv[4] dbname=$argv[5]"))
+if (!$c=pg_connect("host=$argv[3] user=$argv[4] password=$argv[5] dbname=$argv[6]"))
 	die("Erreur connexion SQL");
 $total_osm=0;
 $total_cadastre=0;
