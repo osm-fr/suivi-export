@@ -260,7 +260,7 @@ if ($exportation_shape AND $data->count!=0)
 	and ST_Within(ST_PointOnSurface(p1.way), p2.simplified_way) and p2.simplified_way && f.simplified_way and f.osm_id=$osm_id_france
 	and p1.admin_level='8' and p1.boundary='administrative' and st_isvalid(p1.way)";
 	
-	exec("pgsql2shp -h $pg_server -P $pg_password -u $pg_user -f \"$dep-$data->name\" $pg_data_base \"$query\"");
+	exec("pgsql2shp -h $argv[3] -u $argv[4] -P $argv[5] -f \"$dep-$data->name\" $argv[6] \"$query\"");
 	
 	// exportation en shp
 	if ($data->count<$nombre_cadastre) //si incomplet, on le met dans un autre repertoire
