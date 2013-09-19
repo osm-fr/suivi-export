@@ -15,6 +15,7 @@ chemin_export="/data/work/export"
 dossier_temporaire="/dev/shm"
 
 chemin_export_administratif="$chemin_export/contours-administratifs"
+chemin_export_cours_eau="$chemin_export/cours-eau"
 
 chemin_suivi_commune="$chemin_suivi/communes"
 chemin_export_commune="$chemin_export_administratif/communes"

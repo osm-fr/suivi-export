@@ -23,6 +23,7 @@ cp ./longeur-cours-eau-france/sorttable.js $dossier_cours_eau
 ./exports-administratif/export-limites-administratives.sh 4 22 regions $chemin_export_administratif $pg_base_france
 
 # Export des cours d'eau
-./exports-cours-eau-longs/exportation-shape.sh $chemin_export_administratif $pg_base_france
+mkdir $chemin_export_cours_eau 2>/dev/null
+./exports-cours-eau-longs/exportation-shape.sh $chemin_export_cours_eau $pg_base_france
 
 
