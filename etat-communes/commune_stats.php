@@ -282,7 +282,7 @@ $total_osm_cadastre_vecto=round(($total_cadastre_vecto-$compteur_commune_vecto_c
 $csv.="tous;tous;tous;$total_osm;$total_cadastre;$total_cadastre_vecto;$total_osm_cadastre;$total_osm_cadastre_vecto";
 $suivi="\n$liste_communes_non_presentes_vecteur\n$liste_communes_non_presentes_image";
 
-$date=rtrim(str_replace("\\","",exec("wget $fichier_state_date_base -q -O -  | grep timestamp | sed s/timestamp=// | sed s/T/\\ / | sed s/:..Z// ")));
+$date=rtrim(str_replace("\\","",exec("wget $fichier_state_base_monde -q -O -  | grep timestamp | sed s/timestamp=// | sed s/T/\\ / | sed s/:..Z// ")));
 $bug_trouve="Vous pensez avoir trouvé un bug ? Vous pouvez le signaler ici : http://trac.openstreetmap.fr/newticket , (composant suivi/export admin)\n";
 $en_tete="
 Etat statistiques des limites de communes calculé le ".date(DATE_RFC822)." sur une copie de la base public osm datant du : $date\n";
