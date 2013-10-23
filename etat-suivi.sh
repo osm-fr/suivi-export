@@ -10,7 +10,7 @@ mkdir $chemin_export_administratif 2>/dev/null
 mkdir $chemin_suivi_commune 2>/dev/null
 mkdir $chemin_export_commune 2>/dev/null
 
-php ./etat-communes/commune_stats.php $chemin_suivi_commune $chemin_export_commune $pg_serveur_monde $pg_role_monde $pg_password_monde $pg_base_monde > $chemin_suivi_commune/errors.log 2>&1
+php ./etat-communes/commune_stats.php $chemin_suivi_commune $chemin_export_commune $pg_serveur_monde $pg_role_monde $pg_password_monde $pg_base_monde $fichier_state_base_monde > $chemin_suivi_commune/errors.log 2>&1
 
 #calcul des km par cours d'eau et comparaison au SANDRE
 dossier_cours_eau=$chemin_suivi/longeur-cours-eau-france/

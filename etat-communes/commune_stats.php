@@ -29,6 +29,7 @@ $use_cache=TRUE;
 $exportation_shape=TRUE;
 $chemin_suivi_communes=$argv[1];
 $chemin_depot=$argv[2];
+$fichier_state_base_monde=$argv[7];
 $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 @mkdir($dossier_stats_cadastre);
 @mkdir("$chemin_depot/incomplet");
