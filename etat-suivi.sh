@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$d=$(dirname $0)
+d=$(dirname $0)
 
 . $d/config.sh
 
