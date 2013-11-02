@@ -33,8 +33,9 @@ $fichier_state_base_monde=$argv[7];
 $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 @mkdir($dossier_stats_cadastre);
 @mkdir("$chemin_depot/incomplet");
-// Dans la table france_polygon_manuel, quel osm_id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
-$osm_id_france=5;
+// Dans la table other_polygon, quel id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
+// voir dans le dossier data pour charger ce polygone et/ou simplement toute la table
+$osm_id_france=1;
 
 
 if (!$c=pg_connect("host=$argv[3] user=$argv[4] password=$argv[5] dbname=$argv[6]"))
@@ -44,7 +45,7 @@ $total_cadastre=0;
 $total_cadastre_vecto=0;
 
 // BIDOUILLE - Fonction pour gérer les problème de commune ayant des bugs de géométries
-function query_mutante($c,$dep,$secure)
+function query_mutante($numero_departement,$secure,$avec_geometry)
 {
 global $osm_id_france;
 if ($secure)
@@ -53,17 +54,17 @@ else
   $conservatif="";
 
 $query="select p1.name as nom_commune,p1.\"ref:INSEE\" as ref_commune,p2.osm_id, p2.ref, p2.name
-		from planet_osm_polygon as p1,planet_osm_polygon as p2,france_polygon_manuel as f
+		from planet_osm_polygon as p1,planet_osm_polygon as p2,other_polygons as f
 		where 
 			p2.admin_level='6' 
 		and 
-			p2.ref='$dep' 
+			p2.ref='$numero_departement' 
 		and 
 			p1.simplified_way && p2.simplified_way
 		and 
 			ST_Within(ST_PointOnSurface(p1.way), p2.way) 
 		and 
-			p2.simplified_way && f.simplified_way 
+			st_within(p2.simplified_way,f.simplified_way)
 		and 
 			f.osm_id=$osm_id_france
 		and 
@@ -71,10 +72,7 @@ $query="select p1.name as nom_commune,p1.\"ref:INSEE\" as ref_commune,p2.osm_id,
 		and 
 			p1.boundary='administrative' $conservatif"; 
 
-//print($query);
-$r=pg_query($query);
-    
-return $r;
+return $query;
 }
 
 //Préparation du fichier csv
@@ -195,15 +193,8 @@ $total_cadastre_vecto+=$cadastre_vecto;
 // BIDOUILLE - ici contournement du problème que osm2pgsql stocke en format polygon au lieu de multipolygon et permet alors la présence
 // de polygone invalide sur lesquels je ne peux obtenir un point sur la surface
 $requete_qui_marche="normal";
-$r=query_mutante($c,$dep,True);
-
-/* C'est con en fait car justement on veut repérer les bugs ! donc si une commune est buggée, on ne la considère pas comme valide
-if (@pg_num_rows($r)==0) // on a rien eu avec la requête normal
-{
-	$r=query_mutante($c,$dep,TRUE);
-	$requete_qui_marche="secure";
-}
-*/
+$query=query_mutante($dep,True,False);
+$r=pg_query($query);
 unset($data);
 if (@pg_num_rows($r)==0) // département vide ou non présent
 {
@@ -255,11 +246,7 @@ $csv.="$data->ref;$data->name;".(-$data->osm_id).";$data->count;$nombre_cadastre
 if ($exportation_shape AND $data->count!=0)
 {
 
-	$query="select p1.name,p1.\\\"ref:INSEE\\\" as code_insee,st_transform(p1.way,4326) as way
-	from planet_osm_polygon as p1,planet_osm_polygon as p2,france_polygon_manuel as f
-	where p2.admin_level='6' and p2.ref='$dep' and p1.simplified_way && p2.simplified_way
-	and ST_Within(ST_PointOnSurface(p1.way), p2.simplified_way) and p2.simplified_way && f.simplified_way and f.osm_id=$osm_id_france
-	and p1.admin_level='8' and p1.boundary='administrative' and st_isvalid(p1.way)";
+	$query=$query_mutante($dep,True,True);
 	
 	exec("pgsql2shp -h $argv[3] -u $argv[4] -P $argv[5] -f \"$dep-$data->name\" $argv[6] \"$query\"");
 	
