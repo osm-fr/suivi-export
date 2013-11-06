@@ -48,7 +48,7 @@ taper ce commentaire j'aurais pû le refaire en php ;-)
 -- sly
 */
 
-$date=exec('grep timestamp '.$argv[2].' | sed s/timestamp=// | sed s/\\\\\\\\//g | sed s/[TZ]/" "/g');
+$date=$argv[2];
 
 /* Un paramètre pour ne pas afficher les cours d'eau non présent dans osm d'une longeur de moins de X km, sinon la page est immense --sly*/
 $seuil_longueur_max=80;

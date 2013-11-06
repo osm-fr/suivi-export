@@ -1,8 +1,6 @@
 <?php
 /*
-Ce script est distribué sous licence BSD avec une clause particulière :
-L'utilisation, la modification et la distribution est interdite à toute personne en cours de rédaction d'un mémoire de
-thèse et qui aurrait pris du retard dans sa rédaction.
+Ce script est distribué sous licence WTFPL
 
 L'auteur décline toute responsabilité quant au temps perdu et aux cheveux arrachés à tenter de comprendre ce code.
 
@@ -19,23 +17,23 @@ sly
  - statistiques totaux
 */
 
-header("Content-Type: text/plain; charset=UTF-8"); // de toute façon ça se lance dans un cron, sauf cas du :
-/* Petite bidouille pour fournir le code source de moi même si ?src est passé en paramètre */
-if (isset($_GET['src']))
-  die(file_get_contents($_SERVER['SCRIPT_FILENAME'])); 
-
 /********* CONFIG ***********/
 $use_cache=TRUE;
 $exportation_shape=TRUE;
-$chemin_suivi_communes=$argv[1];
-$chemin_depot=$argv[2];
-$fichier_state_base_monde=$argv[7];
-$dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
-@mkdir($dossier_stats_cadastre);
-@mkdir("$chemin_depot/incomplet");
 // Dans la table other_polygon, quel id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
 // voir dans le dossier data pour charger ce polygone et/ou simplement toute la table
 $osm_id_france=1;
+
+/**** le reste est a passer en paramètre lors de l'appel ****/
+$chemin_suivi_communes=$argv[1];
+$chemin_depot=$argv[2];
+$date_base=$argv[7];
+$dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
+
+/************/
+
+@mkdir($dossier_stats_cadastre);
+@mkdir("$chemin_depot/incomplet");
 
 
 if (!$c=pg_connect("host=$argv[3] user=$argv[4] password=$argv[5] dbname=$argv[6]"))
@@ -44,16 +42,18 @@ $total_osm=0;
 $total_cadastre=0;
 $total_cadastre_vecto=0;
 
-// BIDOUILLE - Fonction pour gérer les problème de commune ayant des bugs de géométries
-function query_mutante($numero_departement,$secure,$avec_geometry)
+// Cette requête est utilisée par la partie suivi mais aussi par l'export en shapefile
+// et ne diffère que de pas grand chose, j'ai donc décidé de factoriser la requête
+function query_mutante($numero_departement,$pour_export)
 {
 global $osm_id_france;
-if ($secure)
-  $conservatif="and st_isvalid(p1.way)";
+if ($pour_export) // en mode export on veut la géométrie en plus
+	$champs_voulu=",p1.way";
 else
-  $conservatif="";
+	$champs_voulu=",p2.osm_id, p2.ref, p2.name"; // en mode suivi
 
-$query="select p1.name as nom_commune,p1.\"ref:INSEE\" as ref_commune,p2.osm_id, p2.ref, p2.name
+// note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 1 caractères et ça coupait en "nom_commun" !
+$query="select p1.name as commune,p1.\"ref:INSEE\" as ref_insee$champs_voulu
 		from planet_osm_polygon as p1,planet_osm_polygon as p2,other_polygons as f
 		where 
 			p2.admin_level='6' 
@@ -64,13 +64,15 @@ $query="select p1.name as nom_commune,p1.\"ref:INSEE\" as ref_commune,p2.osm_id,
 		and 
 			ST_Within(ST_PointOnSurface(p1.way), p2.way) 
 		and 
-			st_within(p2.simplified_way,f.simplified_way)
+			st_within(ST_PointOnSurface(p2.simplified_way),f.simplified_way)
 		and 
-			f.osm_id=$osm_id_france
+			f.id=$osm_id_france
 		and 
 			p1.admin_level='8' 
 		and 
-			p1.boundary='administrative' $conservatif"; 
+			p1.boundary='administrative'
+		and
+			st_isvalid(p1.way)"; 
 
 return $query;
 }
@@ -125,7 +127,7 @@ $dep_cadastre=$dep;
 if ($dep[0]=="0")
 	$dep=substr($dep,1,10);
 
-print("dep :$dep...\n");
+print("Recherche du département ref=$dep dans la base et ses communes...");
 // CADASTRE
 //Récupération des infos du cadastre
 $liste_communes_non_presentes_vecteur.="### Département $dep, communes dont les limites ne sont pas, ou n'ont pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en vecteur au cadastre):\n";
@@ -193,11 +195,12 @@ $total_cadastre_vecto+=$cadastre_vecto;
 // BIDOUILLE - ici contournement du problème que osm2pgsql stocke en format polygon au lieu de multipolygon et permet alors la présence
 // de polygone invalide sur lesquels je ne peux obtenir un point sur la surface
 $requete_qui_marche="normal";
-$query=query_mutante($dep,True,False);
+$query=query_mutante($dep,False);
 $r=pg_query($query);
 unset($data);
 if (@pg_num_rows($r)==0) // département vide ou non présent
 {
+	print("non trouvé\n");
 	$data->ref=$dep;
 	$data->name="(none)";
 	$data->osm_id="(not in db)";
@@ -212,8 +215,8 @@ else
 		if (!isset($data)) // on en garde une copie pour avoir nom, id, et ref du département
 			$data=$liste_osm;
 		// celle là y est
-		unset($liste_code_insee_vecteur[$liste_osm->ref_commune]);
-		unset($liste_code_insee_image[$liste_osm->ref_commune]);
+		unset($liste_code_insee_vecteur[$liste_osm->ref_insee]);
+		unset($liste_code_insee_image[$liste_osm->ref_insee]);
 	}
 	// BIDOUILLE CAS SPECIAL - gestion des non mises à jour du cadastre : cette commune n'existe plus (fusion)
 	// Le cadastre s'est il mis à jour depuis ?
@@ -221,6 +224,7 @@ else
 	// unset($liste_code_insee_image["52266"]);
 	        
 	$data->count=pg_num_rows($r);
+	print ("trouvé : $data->name ($data->count communes)\n");
 }
 $j=0;
 foreach ($liste_code_insee_vecteur as $commune => $son_nom)
@@ -246,9 +250,9 @@ $csv.="$data->ref;$data->name;".(-$data->osm_id).";$data->count;$nombre_cadastre
 if ($exportation_shape AND $data->count!=0)
 {
 
-	$query=$query_mutante($dep,True,True);
+	$query=query_mutante($dep,True);
 	
-	exec("pgsql2shp -h $argv[3] -u $argv[4] -P $argv[5] -f \"$dep-$data->name\" $argv[6] \"$query\"");
+	exec("pgsql2shp -h $argv[3] -u $argv[4] -P $argv[5] -f \"$dep-".addslashes($data->name)."\" $argv[6] \"".addcslashes($query,'"\\/')."\"");
 	
 	// exportation en shp
 	if ($data->count<$nombre_cadastre) //si incomplet, on le met dans un autre repertoire
@@ -270,10 +274,9 @@ $total_osm_cadastre_vecto=round(($total_cadastre_vecto-$compteur_commune_vecto_c
 $csv.="tous;tous;tous;$total_osm;$total_cadastre;$total_cadastre_vecto;$total_osm_cadastre;$total_osm_cadastre_vecto";
 $suivi="\n$liste_communes_non_presentes_vecteur\n$liste_communes_non_presentes_image";
 
-$date=rtrim(str_replace("\\","",exec("wget $fichier_state_base_monde -q -O -  | grep timestamp | sed s/timestamp=// | sed s/T/\\ / | sed s/:..Z// ")));
 $bug_trouve="Vous pensez avoir trouvé un bug ? Vous pouvez le signaler ici : http://trac.openstreetmap.fr/newticket , (composant suivi/export admin)\n";
 $en_tete="
-Etat statistiques des limites de communes calculé le ".date(DATE_RFC822)." sur une copie de la base public osm datant du : $date\n";
+Etat statistiques des limites de communes calculé le ".date(DATE_RFC822)." sur une copie de la base public osm datant du : $date_base\n";
 file_put_contents("$chemin_suivi_communes/communes.csv",$csv);
 file_put_contents("$chemin_suivi_communes/suivi.txt",$bug_trouve.$en_tete.$suivi);
 file_put_contents("$chemin_suivi_communes/suivi-vectoriel.txt",$bug_trouve.$en_tete.$liste_communes_non_presentes_vecteur);
