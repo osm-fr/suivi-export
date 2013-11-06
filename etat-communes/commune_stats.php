@@ -48,7 +48,7 @@ function query_mutante($numero_departement,$pour_export)
 {
 global $osm_id_france;
 if ($pour_export) // en mode export on veut la géométrie en plus
-	$champs_voulu=",p1.way";
+	$champs_voulu=",st_transform(p1.way,4326) as way";
 else
 	$champs_voulu=",p2.osm_id, p2.ref, p2.name"; // en mode suivi
 
