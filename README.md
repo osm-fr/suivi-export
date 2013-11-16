@@ -6,19 +6,18 @@ Suivi/comparaison et exportation de limites administratives et cours d'eau depui
 Installation
 ============
 
-Pensez à remplir le config.php à la racine, en vous aidant du config-sample.php
-
-Note: hélas, la plupart des chemins utilisés pour crééer les fichiers est en dur un peu partout dans le code, et entre shell et php, ben, c'est pas facile de 
-tout fusionner, mais ça serait bien de tout mettre dans le config.php (en factorisant)
-Mais en attendant, à vous de fouiller les scripts et mettre à jour les chemins qui pointent vers les fichiers contenant les résultats
+Copier le config-sample.sh vers config.sh à la racine, et adaptez
 
 cron
 ====
 cron à lancer chaque nuit (ou en fait quand on veut, mais attention, ça prend bien 30 minutes au total)
 
 ``
-0 4 * * * cd /chemin-dossier-scripts ; ./etat-suivi.sh
+0 19 * * * /data/project/suivi-export/etat-suivi.sh 
 ``
+
+dans /data/other_polygons.sql se trouve le polygone de france metro+dom/tom pour des calculs uniquement sur la france
+à charger dans le serveur SQL intérogé
 
 installation adaptée aux serveurs de openstreetmap france 
 =========================================================
@@ -75,5 +74,5 @@ importer le fichier data/sandre.sql.bz2 dans postgresql, cette unique table doit
 
 Modification du code
 ====================
-Ce dossier est géré par sur https://github.com/osm-fr/suivi-export.git, une modification direct sur le serveur autre que dans config.php sera écrasée lors de la
+Ce dossier est géré par sur https://github.com/osm-fr/suivi-export.git, une modification direct sur le serveur autre que dans config.sh sera écrasée lors de la
 prochaine modification, attention donc à contacter sly (sylvain@letuffe.org) avant de tenter des mises à jour "live"
