@@ -27,7 +27,7 @@ $osm_id_france=1;
 /**** le reste est a passer en paramètre lors de l'appel ****/
 $chemin_suivi_communes=$argv[1];
 $chemin_depot=$argv[2];
-$date_base=$argv[7];
+$date_base=$argv[8];
 $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 
 /************/
@@ -36,7 +36,7 @@ $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
 @mkdir("$chemin_depot/incomplet");
 
 
-if (!$c=pg_connect("host=$argv[3] user=$argv[4] password=$argv[5] dbname=$argv[6]"))
+if (!$c=pg_connect("host=$argv[3] port=$argv[4] user=$argv[5] password=$argv[6] dbname=$argv[7]"))
 	die("Erreur connexion SQL");
 $total_osm=0;
 $total_cadastre=0;

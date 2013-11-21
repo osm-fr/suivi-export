@@ -6,16 +6,18 @@ pg_base_monde="osm2pgsql"
 pg_role_monde="suivi-export"
 pg_password_monde=""
 pg_serveur_monde="osm2pgsql-monde.openstreetmap.fr"
+pg_serveur_port_monde=5432
 
 # Config file to access a osm2pgsql France only database
 pg_base_france="osm"
 pg_password_france=""
 pg_role_france=""
 pg_serveur_france="localhost"
+pg_serveur_port_france=5432
 
 
 fichier_state_base_monde="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt"
-fichier_state_base_france="/data/project/osm2pgsql/import-base-osm/state.txt"
+fichier_state_base_france="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt"
 
 chemin_suivi="/data/work/suivi"
 chemin_export="/data/work/export"

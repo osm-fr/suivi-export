@@ -23,7 +23,7 @@ else
   champ_contenant_ref="ref"
 fi
 
-pgsql2shp -h $5 -u $6 -P $7 -f $dossier_temporaire/$3-metropole $8 "select st_transform(admin.way,4326) as way,admin.name as nom,\"$champ_contenant_ref\" as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.\"$champ_contenant_ref\" is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
+pgsql2shp -h $5 -p $6 -u $7 -P $8 -f $dossier_temporaire/$3-metropole $9 "select st_transform(admin.way,4326) as way,admin.name as nom,\"$champ_contenant_ref\" as numero from planet_osm_polygon as admin where admin.admin_level='$1' and admin.\"$champ_contenant_ref\" is not null and isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
 RES=`cat $dossier_temporaire/resultat | grep "\[$2"` 
 
 if [ "a$RES" = "a" ] ; then

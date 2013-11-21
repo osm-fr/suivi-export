@@ -38,7 +38,7 @@ else
   header("Content-type: text/html; charset=UTF-8");
 
 /* Connexion à la base PostresSQL */
-if (!$c=pg_connect("host=$argv[1] user=$argv[2] password=$argv[3] dbname=$argv[4]"))
+if (!$c=pg_connect("host=$argv[1] port=$argv[2] user=$argv[3] password=$argv[4] dbname=$argv[5]"))
   die("Erreur connexion SQL");
 
 /* 
@@ -48,7 +48,7 @@ taper ce commentaire j'aurais pû le refaire en php ;-)
 -- sly
 */
 
-$date=$argv[5];
+$date=$argv[6];
 
 /* Un paramètre pour ne pas afficher les cours d'eau non présent dans osm d'une longeur de moins de X km, sinon la page est immense --sly*/
 $seuil_longueur_max=80;
