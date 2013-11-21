@@ -144,7 +144,7 @@ dossier data semble avoir des problèmes de validité
   where \"ref:sandre\"='$liste_sandre->code_hydro' and (l.waterway='river' or l.waterway='canal' or l.waterway='stream')
   group by l.osm_id
   order by longueur desc";
-  
+
   $res_osm=pg_query($query_osm);
   $l_sandre=round($liste_sandre->longueur/1000,1);
   // cartographié
