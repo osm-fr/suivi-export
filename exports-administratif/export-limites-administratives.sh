@@ -1,10 +1,9 @@
 #!/bin/bash
-DB_OSM2PGSQL=$5
 dossier_temporaire="/dev/shm/tmp"
 mkdir $dossier_temporaire 2>/dev/null
 
-if [ a$5 = "a" ] ;  then
-echo "Utilisation : ./export-limites-administratives.sh <admin_level> <nombre_attendu> <nom du fichier> <dossier où exporter> <nom de la base locale>"
+if [ a$8 = "a" ] ;  then
+echo "Utilisation : ./export-limites-administratives.sh <admin_level> <nombre_attendu> <nom du fichier> <dossier où exporter> <host base pg> <user pg> <password pg> <pg dbname>"
 echo ""
 echo "Où <admin_level> vaut 6 pour les départements, 4 pour les regions"
 echo "Où <nombre_attendu> et le nombre de contours attendu pour déterminer si l'export est complet ou incomplet"
@@ -24,7 +23,7 @@ else
   champ_contenant_ref="ref"
 fi
 
-pgsql2shp -f $dossier_temporaire/$3-metropole $DB_OSM2PGSQL "select st_transform(admin.way,4326) as way,admin.name as nom,\"$champ_contenant_ref\" as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.\"$champ_contenant_ref\" is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
+pgsql2shp -h $5 -u $6 -P $7 -f $dossier_temporaire/$3-metropole $8 "select st_transform(admin.way,4326) as way,admin.name as nom,\"$champ_contenant_ref\" as numero from planet_osm_polygon as admin,france_polygon as f where admin.admin_level='$1' and f.osm_id=4  and admin.\"$champ_contenant_ref\" is not null and admin.simplified_way && f.simplified_way and st_within(st_pointonsurface(admin.way),f.simplified_way) and isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
 RES=`cat $dossier_temporaire/resultat | grep "\[$2"` 
 
 if [ "a$RES" = "a" ] ; then

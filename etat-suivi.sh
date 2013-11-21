@@ -24,13 +24,14 @@ dossier_cours_eau=$chemin_suivi/longeur-cours-eau-france/
 mkdir $dossier_cours_eau 2>/dev/null
 
 date_base_france=`grep timestamp $fichier_state_base_france | sed s/timestamp=// | sed s/[TZ]/" "/g | sed s/\\\\\\\\//g`
-php $d/longeur-cours-eau-france/suivi-cours-eau.php $pg_base_france $date_base_france > $dossier_cours_eau/comparaison-sandre.html
+php $d/longeur-cours-eau-france/suivi-cours-eau.php $pg_serveur_france $pg_role_france $pg_password_france $pg_base_france $date_base_france > $dossier_cours_eau/comparaison-sandre.html
 cp $d/longeur-cours-eau-france/sorttable.js $dossier_cours_eau
 cp $d/HEADER.html $dossier_cours_eau
 
 # Export des régions et départements
-$d/exports-administratif/export-limites-administratives.sh 6 96 departements $chemin_export_administratif $pg_base_france
-$d/exports-administratif/export-limites-administratives.sh 4 22 regions $chemin_export_administratif $pg_base_france
+param_base="$pg_serveur_france $pg_role_france $pg_password_france $pg_base_france"
+$d/exports-administratif/export-limites-administratives.sh 6 96 departements $chemin_export_administratif $param_base
+$d/exports-administratif/export-limites-administratives.sh 4 22 regions $chemin_export_administratif $param_base
 
 # Export des cours d'eau
 mkdir $chemin_export_cours_eau 2>/dev/null

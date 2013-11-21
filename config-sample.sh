@@ -7,6 +7,13 @@ pg_role_monde="suivi-export"
 pg_password_monde=""
 pg_serveur_monde="osm2pgsql-monde.openstreetmap.fr"
 
+# Config file to access a osm2pgsql France only database
+pg_base_france="osm"
+pg_password_france=""
+pg_role_france=""
+pg_serveur_france="localhost"
+
+
 fichier_state_base_monde="http://osm2pgsql-monde.openstreetmap.fr/~osm2pgsql/state.txt"
 fichier_state_base_france="/data/project/osm2pgsql/import-base-osm/state.txt"
 
@@ -20,9 +27,6 @@ chemin_export_cours_eau="$chemin_export/cours-eau"
 chemin_suivi_commune="$chemin_suivi/communes"
 chemin_export_commune="$chemin_export_administratif/communes"
 
-# Config file to access a local osm2pgsql France only database
-# Tout est prévu pour un accès "peer" de postgresql, c'est à dire sans mot de passe.
-pg_base_france="osm"
 
 
 
