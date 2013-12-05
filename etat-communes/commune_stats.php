@@ -252,7 +252,7 @@ if ($exportation_shape AND $data->count!=0)
 
 	$query=query_mutante($dep,True);
 	
-	exec("pgsql2shp -h $argv[3] -u $argv[4] -P $argv[5] -f \"$dep-".addslashes($data->name)."\" $argv[6] \"".addcslashes($query,'"\\/')."\"");
+	exec("pgsql2shp -h $argv[3] -u $argv[5] -P $argv[6] -f \"$dep-".addslashes($data->name)."\" $argv[7] \"".addcslashes($query,'"\\/')."\"");
 	
 	// exportation en shp
 	if ($data->count<$nombre_cadastre) //si incomplet, on le met dans un autre repertoire
