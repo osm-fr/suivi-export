@@ -53,18 +53,18 @@ else
 	$champs_voulu=",p2.osm_id, p2.ref, p2.name"; // en mode suivi
 
 // note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 1 caractères et ça coupait en "nom_commun" !
-$query="select p1.name as commune,p1.\"ref:INSEE\" as ref_insee$champs_voulu
+$query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
 		from planet_osm_polygon as p1,planet_osm_polygon as p2,other_polygons as f
 		where 
 			p2.admin_level='6' 
 		and 
 			p2.ref='$numero_departement' 
 		and 
-			p1.simplified_way && p2.simplified_way
+			p1.way && p2.way
 		and 
 			ST_Within(ST_PointOnSurface(p1.way), p2.way) 
 		and 
-			st_within(ST_PointOnSurface(p2.simplified_way),f.simplified_way)
+			st_within(ST_PointOnSurface(p2.way),f.way)
 		and 
 			f.id=$osm_id_france
 		and 
@@ -103,7 +103,7 @@ $departements[]="971";
 $departements[]="972";
 $departements[]="973";
 $departements[]="974";
-//$departements[]="976"; Mayotte n'est pas présent au cadastre !
+$departements[]="976"; //Mayotte n'est pas présent au cadastre ! mais ça n'empêche pas son exportation en shp, ça devrait par contre indiquer du 0% dans le suivi
 
 
 // Nettoyage des fichiers du cache s'ils sont vieux de plus de x jours
