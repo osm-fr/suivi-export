@@ -20,15 +20,18 @@ sly
 /********* CONFIG ***********/
 $use_cache=TRUE;
 $exportation_shape=TRUE;
-// Dans la table other_polygon, quel id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
-// voir dans le dossier data pour charger ce polygone et/ou simplement toute la table
-$osm_id_france=1;
 
 /**** le reste est a passer en paramètre lors de l'appel ****/
 $chemin_suivi_communes=$argv[1];
 $chemin_depot=$argv[2];
-$date_base=$argv[8];
+$date_base=$argv[10];
 $dossier_stats_cadastre="$chemin_suivi_communes/stats-cadastre";
+
+// Dans la quelle table annexe, quel id porte actuellement le multipolygon qui contient la France (avec DOM/TOM)
+// voir dans le dossier data pour charger ce polygone et/ou simplement toute la table
+$table_qui_contient_la_france=$argv[8];
+$id_france_dans_cette_table=$argv[9];
+
 
 /************/
 
@@ -54,7 +57,7 @@ else
 
 // note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 1 caractères et ça coupait en "nom_commun" !
 $query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
-		from planet_osm_polygon as p1,planet_osm_polygon as p2,other_polygons as f
+		from planet_osm_polygon as p1,planet_osm_polygon as p2,$table_qui_contient_la_france as f
 		where 
 			p2.admin_level='6' 
 		and 
@@ -66,7 +69,7 @@ $query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
 		and 
 			st_within(ST_PointOnSurface(p2.way),f.way)
 		and 
-			f.id=$osm_id_france
+			f.id=$id_france_dans_cette_table
 		and 
 			p1.admin_level='8' 
 		and 
