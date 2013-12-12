@@ -49,7 +49,9 @@ $total_cadastre_vecto=0;
 // et ne diffère que de pas grand chose, j'ai donc décidé de factoriser la requête
 function query_mutante($numero_departement,$pour_export)
 {
-global $osm_id_france;
+global $table_qui_contient_la_france;
+global $id_france_dans_cette_table;
+
 if ($pour_export) // en mode export on veut la géométrie en plus
 	$champs_voulu=",st_transform(p1.way,4326) as way";
 else
@@ -107,7 +109,6 @@ $departements[]="972";
 $departements[]="973";
 $departements[]="974";
 $departements[]="976"; //Mayotte n'est pas présent au cadastre ! mais ça n'empêche pas son exportation en shp, ça devrait par contre indiquer du 0% dans le suivi
-
 
 // Nettoyage des fichiers du cache s'ils sont vieux de plus de x jours
 // flemme de le faire en php ;-)
