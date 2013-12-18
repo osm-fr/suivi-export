@@ -119,18 +119,17 @@ if ($order=='longueur')
 else
   $croissant_decroissant="asc";
   
-$query_sandre="select toponyme,code_hydro, st_length(the_geom) as longueur from sandre order by $order $croissant_decroissant limit 5;";
+$query_sandre="select toponyme,code_hydro, st_length(the_geom) as longueur from sandre order by $order $croissant_decroissant;";
 $res_sandre=pg_query($query_sandre);
 
 while($liste_sandre=pg_fetch_object($res_sandre))
 {
-  print("$liste_sandre->code_hydro ...");
   /* Le sandre ne donnant que les km en france alors qu'osm n'a pas cette limite, j'utilise le polygone france que j'ai dans france_polygon 
   pour construitre l'intersection et son osm_id est 4 (issue d'une recombinaison depuis osm dont j'ai perdu l'histoire depuis toutes ces années).
   J'utilise une colonne spécialement simplifiée pour l'occasion pour accélérer le calcul --sly
   */
-/* Cette solution permettait de couper juste ce qui est en france pour le comprer au sandre, mais je n'arrive plus à constituer le bon polygone "france" ceux dans le 
-dossier data semble avoir des problèmes de validité
+  /* Cette solution permettait de couper juste ce qui est en france pour le comprer au sandre, mais je n'arrive plus à constituer le bon polygone "france" ceux dans le 
+  dossier data semble avoir des problèmes de validité
   $query_osm="select
   l.osm_id as osm_id,sum(st_length(st_transform(st_intersection(f.simplified_way,l.way),2154))) as longueur
   from planet_osm_line as l,france_polygon as f
