@@ -37,6 +37,6 @@ cp $d/longeur-cours-eau-france/sorttable.js "$dossier_cours_eau"
 # Export des cours d'eau
 cp "$header_file" "$chemin_export_cours_eau"
 mkdir "$chemin_export_cours_eau" 2>/dev/null
-$d/exports-cours-eau-longs/exportation-shape.sh "$chemin_export_cours_eau" $param_base_france
+$d/exports-cours-eau-longs/exportation-shape.sh "$chemin_export_cours_eau" $param_base_monde
 
 
