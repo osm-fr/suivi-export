@@ -30,7 +30,7 @@ $d/exports-administratif/export-limites-administratives.sh 4 27 regions "$chemin
 
 #calcul des km par cours d'eau et comparaison au SANDRE
 mkdir $chemin_suivi_cours_eau 2>/dev/null
-
+cp "$header_file" "$chemin_suivi_cours_eau"
 php $d/longeur-cours-eau-france/suivi-cours-eau.php "$date_base_monde" $param_base_monde > "$chemin_suivi_cours_eau"/comparaison-sandre.html
 cp $d/longeur-cours-eau-france/sorttable.js "$dossier_cours_eau"
 
@@ -38,5 +38,3 @@ cp $d/longeur-cours-eau-france/sorttable.js "$dossier_cours_eau"
 cp "$header_file" "$chemin_export_cours_eau"
 mkdir "$chemin_export_cours_eau" 2>/dev/null
 $d/exports-cours-eau-longs/exportation-shape.sh "$chemin_export_cours_eau" $param_base_monde
-
-
