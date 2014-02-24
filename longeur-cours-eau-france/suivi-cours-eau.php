@@ -51,7 +51,7 @@ taper ce commentaire j'aurais pû le refaire en php ;-)
 $date=$argv[1];
 
 /* Un paramètre pour ne pas afficher les cours d'eau non présent dans osm d'une longeur de moins de X km, sinon la page est immense --sly*/
-$seuil_longueur_max=80;
+$seuil_longueur_max=10;
 
 /* C'est la variable qui contient le HTML à renvoyer --sly*/
 $suivi_dans_osm="
