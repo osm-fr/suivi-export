@@ -77,7 +77,9 @@ $query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
 		and 
 			p1.boundary='administrative'
 		and
-			st_isvalid(p1.way)"; 
+			st_isvalid(p1.way)
+        and
+			st_isvalid(p1.way) and p1.tags ? 'ref:INSEE'"; // BIDOUILLE : on devrait pouvoir s'en passer, mais osm2pgsql et ça gestion des polygone bizarre, créait des admin_level là où il n'y en avait pas (quand par exemple un membre avait admin_level=8) avec ça, je réduis les risques
 
 return $query;
 }
