@@ -57,7 +57,7 @@ if ($pour_export) // en mode export on veut la géométrie en plus
 else
 	$champs_voulu=",p2.osm_id, p2.ref, p2.name"; // en mode suivi
 
-// note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 1 caractères et ça coupait en "nom_commun" !
+// note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 10 caractères et ça coupait en "nom_commun" !
 $query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
 		from planet_osm_polygon as p1,planet_osm_polygon as p2,$table_qui_contient_la_france as f
 		where 
