@@ -257,8 +257,9 @@ if ($exportation_shape AND $data->count!=0)
 {
 
 	$query=query_mutante($dep,True);
-	
-	exec("pgsql2shp -h $argv[3] -u $argv[5] -P $argv[6] -f \"$dep-".addslashes($data->name)."\" $argv[7] \"".addcslashes($query,'"\\/')."\"");
+	// les espace ou guillemet simple ont tendance à poser problème dans les noms du fichier shape pour des logiciels "limité" (arcgis semble être dans ce cas pour retrouver son .prj/.dbf)
+	$nom_departement_propre=str_replace(array(" ","'"),"-",$data->name);
+	exec("pgsql2shp -h $argv[3] -u $argv[5] -P $argv[6] -f \"$dep-".addslashes($nom_departement_propre)."\" $argv[7] \"".addcslashes($query,'"\\/')."\"");
 	
 	// exportation en shp
 	if ($data->count<$nombre_cadastre) //si incomplet, on le met dans un autre repertoire
@@ -267,10 +268,10 @@ if ($exportation_shape AND $data->count!=0)
 	{
 		$incomplet_ou_pas="";
 		// si le département est complet, on enlève le fichier du dossier incomplet (s'il n'existe pas, ça fera juste rien)
-		@unlink("$chemin_depot/incomplet/$dep-$data->name.shp.tar.gz");
+		@unlink("$chemin_depot/incomplet/$dep-$nom_departement_propre.shp.tar.gz");
 	}
 		
-	exec("tar cvfz \"$chemin_depot/$incomplet_ou_pas$dep-$data->name.shp.tar.gz\" $dep*");
+	exec("tar cvfz \"$chemin_depot/$incomplet_ou_pas$dep-$nom_departement_propre.shp.tar.gz\" $dep*");
 	exec("rm -f  $dep*.shp $dep*.dbf $dep*.shx $dep*.prj");
 
 }
