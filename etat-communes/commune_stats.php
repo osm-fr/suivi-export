@@ -117,7 +117,7 @@ $departements[]="976"; //Mayotte n'est pas présent au cadastre ! mais ça n'emp
 exec("find $dossier_stats_cadastre -type f -ctime +5 -exec rm {} \;");
 
 // temporaire pour test un seul département
-//$departements=array("974");
+// $departements=array("055");
 
 $liste_communes_non_presentes_vecteur="\nFORMAT VECTEUR AU CADASTRE\n";
 $liste_communes_non_presentes_vecteur_csv="";
@@ -160,7 +160,7 @@ else
 	for ($i=0;$i<$nombre;$i++)
 	{
 		// BIDOUILLE - Ignorons les arrondissements des villes de marseille, lyon et Paris (la syntaxe a repérer est soit \ 1ER,\ 2EME ou \ 01-\ 20 pour paris ... soit un espace un ou deux chiffres
-		if (!preg_match("/\ [0-9]/",$res[1][$i]))
+		if (!preg_match("/\ [0-9]/",$res[1][$i]) and $res[1][$i]!="")
 		{
 		       	$ligne=$res[1][$i].",".$res[2][$i].",".$res[3][$i].",".$res[4][$i];
 		       	file_put_contents($file,$ligne."\n",FILE_APPEND);
