@@ -53,12 +53,12 @@ global $table_qui_contient_la_france;
 global $id_france_dans_cette_table;
 
 if ($pour_export) // en mode export on veut la géométrie en plus
-	$champs_voulu=",st_transform(p1.way,4326) as way";
+	$champs_voulu=",ST_SnapToGrid(st_transform(p1.way,4326),0.00001) as way,p1.population as population,p1.tags->'addr:postcode' code_postal";
 else
 	$champs_voulu=",p2.osm_id, p2.ref, p2.name"; // en mode suivi
 
 // note : j'aurais préféré "nom_commune" que "commune" mais le shapefile ne semble pas fichu de gére plus de 10 caractères et ça coupait en "nom_commun" !
-$query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee$champs_voulu
+$query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee,(-p1.osm_id) as osm_id$champs_voulu
 		from planet_osm_polygon as p1,planet_osm_polygon as p2,$table_qui_contient_la_france as f
 		where 
 			p2.admin_level='6' 
@@ -117,7 +117,7 @@ $departements[]="976"; //Mayotte n'est pas présent au cadastre ! mais ça n'emp
 exec("find $dossier_stats_cadastre -type f -ctime +5 -exec rm {} \;");
 
 // temporaire pour test un seul département
-// $departements=array("055");
+// $departements=array("040");
 
 $liste_communes_non_presentes_vecteur="\nFORMAT VECTEUR AU CADASTRE\n";
 $liste_communes_non_presentes_vecteur_csv="";
