@@ -23,17 +23,17 @@ else
   champ_contenant_ref="ref"
 fi
 
-pgsql2shp -h $5 -p $6 -u $7 -P $8 -f $dossier_temporaire/$3-metropole $9 "select st_transform(admin.way,4326) as way,admin.name as nom,$champ_contenant_ref as numero from planet_osm_polygon as admin,${10} as f where f.id=${11} and st_within(ST_PointOnSurface(admin.way),f.way) and admin_level='$1' and st_isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
+pgsql2shp -h $5 -p $6 -u $7 -P $8 -f $dossier_temporaire/$3 $9 "select st_transform(admin.way,4326) as way,admin.name as nom,$champ_contenant_ref as numero from planet_osm_polygon as admin,${10} as f where f.id=${11} and st_within(ST_PointOnSurface(admin.way),f.simplified_way) and admin_level='$1' and boundary='administrative' and st_isvalid(admin.way)='t';" > $dossier_temporaire/resultat 2>&1
 RES=`cat $dossier_temporaire/resultat | grep "\[$2"` 
 
 if [ "a$RES" = "a" ] ; then
 complet_ou_pas="incomplet"
 else
 complet_ou_pas="complet"
-rm $4/$3-metropole-incomplet.tar.gz 2>/dev/null
+rm $4/$3-incomplet.tar.gz 2>/dev/null
 fi
 
 cd $dossier_temporaire
-tar cvfz $4/$3-metropole-$complet_ou_pas.tar.gz $3-metropole.*
+tar cvfz $4/$3-$complet_ou_pas.tar.gz $3.*
 cd -
-rm $dossier_temporaire/$3-metropole.*
+rm $dossier_temporaire/$3.*

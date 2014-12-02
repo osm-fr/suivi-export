@@ -202,6 +202,7 @@ $total_cadastre_vecto+=$cadastre_vecto;
 // de polygone invalide sur lesquels je ne peux obtenir un point sur la surface
 $requete_qui_marche="normal";
 $query=query_mutante($dep,False);
+print($query."\n...Runing");
 $r=pg_query($query);
 unset($data);
 if (@pg_num_rows($r)==0) // département vide ou non présent
