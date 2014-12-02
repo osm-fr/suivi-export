@@ -69,7 +69,7 @@ $query="select p1.name as commune,p1.tags->'ref:INSEE' as ref_insee,(-p1.osm_id)
 		and 
 			ST_Within(ST_PointOnSurface(p1.way), p2.way) 
 		and 
-			st_within(ST_PointOnSurface(p2.way),f.simplified_way)
+			st_within(ST_PointOnSurface(p1.way),f.simplified_way)
 		and 
 			f.id=$id_france_dans_cette_table
 		and 
