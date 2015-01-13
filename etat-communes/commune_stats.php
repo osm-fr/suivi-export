@@ -133,7 +133,7 @@ $dep_cadastre=$dep;
 if ($dep[0]=="0")
 	$dep=substr($dep,1,10);
 
-print("Recherche du département ref=$dep dans la base et ses communes...");
+print("Recherche du département ref=$dep dans la base et ses communes...\n");
 // CADASTRE
 //Récupération des infos du cadastre
 $liste_communes_non_presentes_vecteur.="### Département $dep, communes dont les limites ne sont pas, ou n'ont pas de tag ref:INSEE ou ayant un problème dans osm (mais existent en vecteur au cadastre):\n";
@@ -202,7 +202,7 @@ $total_cadastre_vecto+=$cadastre_vecto;
 // de polygone invalide sur lesquels je ne peux obtenir un point sur la surface
 $requete_qui_marche="normal";
 $query=query_mutante($dep,False);
-print($query."\n...Runing");
+print($query."\n...Runing\n");
 $r=pg_query($query);
 unset($data);
 if (@pg_num_rows($r)==0) // département vide ou non présent

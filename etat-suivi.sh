@@ -23,8 +23,10 @@ param_base_monde="$pg_serveur_monde $pg_serveur_port_monde $pg_role_monde $pg_pa
 php $d/etat-communes/commune_stats.php "$chemin_suivi_commune" "$chemin_export_commune" $param_base_monde "$date_base_monde" > $chemin_suivi_commune/errors.log 2>&1
 
 # Export des régions et départements
-$d/exports-administratif/export-limites-administratives.sh 6 101 departements "$chemin_export_administratif" $param_base_monde
-$d/exports-administratif/export-limites-administratives.sh 4 27 regions "$chemin_export_administratif" $param_base_monde
+$d/exports-administratif/export-limites-administratives.sh 6 departements "$chemin_export_administratif" $param_base_monde
+$d/exports-administratif/export-limites-administratives.sh 4 regions "$chemin_export_administratif" $param_base_monde
+$d/exports-administratif/export-limites-administratives.sh 7 cantons "$chemin_export_administratif" $param_base_monde
+
 
 #calcul des km par cours d'eau et comparaison au SANDRE
 mkdir $chemin_suivi_cours_eau 2>/dev/null
