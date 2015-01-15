@@ -22,7 +22,7 @@ else
   champ_contenant_ref="ref"
 fi
 
-pgsql2shp -h $4 -p $5 -u $6 -P $7 -f $dossier_temporaire/$2 $8 "select st_transform(admin.way,4326) as way,admin.name as nom,$champ_contenant_ref as numero from planet_osm_polygon as admin,${9} as f where f.id=${10} and st_within(ST_PointOnSurface(admin.way),f.simplified_way) and admin_level='$1' and boundary='administrative' and st_isvalid(admin.way)='t';"  > $dossier_temporaire/resultat 2>&1
+pgsql2shp -h $4 -p $5 -u $6 -P $7 -f $dossier_temporaire/$2 $8 "select st_transform(admin.way,4326) as way,admin.name as nom,$champ_contenant_ref as numero,-osm_id as id_osm from planet_osm_polygon as admin,${9} as f where f.id=${10} and st_within(ST_PointOnSurface(admin.way),f.simplified_way) and admin_level='$1' and boundary='administrative' and st_isvalid(admin.way)='t';"  > $dossier_temporaire/resultat 2>&1
 
 cd $dossier_temporaire
 tar cvfz $3/$2.tar.gz $2.*
