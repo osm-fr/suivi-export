@@ -1,9 +1,6 @@
-<VirtualHost *:80>
-
+<VirtualHost *:80 *:443>
         ServerAdmin jocelyn@osm1.crans.org
-
         ServerName suivi.openstreetmap.fr
-
         DocumentRoot /data/work/suivi/
 
         <Directory /data/work/suivi/>

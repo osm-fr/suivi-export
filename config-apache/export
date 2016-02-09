@@ -1,9 +1,6 @@
-<VirtualHost *:80>
-
+<VirtualHost *:80 *:443>
         ServerAdmin jocelyn@osm1.crans.org
-
         ServerName export.openstreetmap.fr
-
         DocumentRoot /data/work/export/
 
         <Directory /data/work/export/>
