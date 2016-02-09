@@ -117,7 +117,7 @@ $departements[]="976"; //Mayotte n'est pas présent au cadastre ! mais ça n'emp
 exec("find $dossier_stats_cadastre -type f -ctime +5 -exec rm {} \;");
 
 // temporaire pour test un seul département
-// $departements=array("040");
+// $departements=array("073");
 
 $liste_communes_non_presentes_vecteur="\nFORMAT VECTEUR AU CADASTRE\n";
 $liste_communes_non_presentes_vecteur_csv="";
@@ -273,7 +273,7 @@ if ($exportation_shape AND $data->count!=0)
 	}
 		
 	exec("tar cvfz \"$chemin_depot/$incomplet_ou_pas$dep-$nom_departement_propre.shp.tar.gz\" $dep*");
-	exec("rm -f  $dep*.shp $dep*.dbf $dep*.shx $dep*.prj");
+	exec("rm -f  $dep*.shp $dep*.dbf $dep*.shx $dep*.prj $dep*.cpg");
 
 }
 }

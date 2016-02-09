@@ -6,6 +6,18 @@ Suivi/comparaison et exportation de limites administratives et cours d'eau depui
 Installation
 ============
 
+Dépendances :
+* curl
+* postgis
+* php5
+* php5-pgsql
+* et p'tet bien d'autres trucs
+
+``
+apt-get install curl postgis php5 php5-pgsql
+``
+
+
 Copier le config-sample.sh vers config.sh à la racine, et adaptez
 
 cron
