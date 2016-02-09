@@ -1,22 +1,15 @@
 <VirtualHost *:80 *:443>
         ServerAdmin jocelyn@osm1.crans.org
         ServerName export.openstreetmap.fr
-        DocumentRoot /data/work/export/
+        DocumentRoot /data/work/export.openstreetmap.fr/
 
-        <Directory /data/work/export/>
+        <Directory /data/work/export.openstreetmap.fr/>
                 AddDefaultCharset UTF-8
-                AddHandler cgi-script .py
                 Options FollowSymLinks Indexes MultiViews
-                #Changé de +SymLinksIfOwnerMatch en -SymLinksIfOwnerMatch par sly le 27/05/2013 (le dossier de suivi de commune et calculé par osm2pgsql mais pour des
-                #raisons de simplicité le lien peut être réalisé par un autre user, la sécu me semble loin d'être engagée, mais m'en causer
-                #si vous voulez faire autrement
-                Options +ExecCGI -MultiViews -SymLinksIfOwnerMatch
+                Options +ExecCGI -MultiViews
                 AllowOverride None
                 DirectoryIndex index.html index.py index.php
         </Directory>
-
-        ExpiresActive On
-        ExpiresByType image/png "access plus 1 month"
 
         ErrorLog /var/log/apache2/export-error.log
         LogLevel warn
